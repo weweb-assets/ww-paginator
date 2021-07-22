@@ -49,7 +49,7 @@ export default {
         },
         paginationOptions() {
             if (!this.content.collectionId) return null;
-            return wwLib.getPaginationOptions(this.content.collectionId);
+            return wwLib.wwCollectionHelper.getPaginationOptions(this.content.collectionId);
         },
         nbPage() {
             if (!this.paginationOptions) return 10;
@@ -105,7 +105,7 @@ export default {
         goTo(index) {
             if (!this.paginationOptions) return;
             if (index !== -1 && index !== this.currentPage) {
-                wwLib.setOffset(this.content.collectionId, index * this.paginationOptions.limit);
+                wwLib.wwCollectionHelper.setOffset(this.content.collectionId, index * this.paginationOptions.limit);
             }
         },
         prev() {
