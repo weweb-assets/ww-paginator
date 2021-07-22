@@ -4,14 +4,14 @@
         "lazyHydrate": true
     },
     "editor": {
-        "label": { "en": "Paginator", "fr": "Paginateur" }
-    },
-    "settingsOptions": {
-        "collectionId": {
-            "label": { "en": "Collection", "fr": "Collection" },
-            "type": "Collection",
-            "options": {
-                "paginated": true
+        "label": { "en": "Paginator", "fr": "Paginateur" },
+        "settingsOptions": {
+            "collectionId": {
+                "label": { "en": "Collection", "fr": "Collection" },
+                "type": "Collection",
+                "options": {
+                    "paginated": true
+                }
             }
         }
     }
