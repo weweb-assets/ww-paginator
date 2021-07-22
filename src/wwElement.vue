@@ -105,7 +105,7 @@ export default {
         goTo(index) {
             if (!this.paginationOptions) return;
             if (index !== -1 && index !== this.currentPage) {
-                wwLib.setOffset(this.collectionId, index * this.paginationOptions.limit);
+                wwLib.setOffset(this.content.collectionId, index * this.paginationOptions.limit);
             }
         },
         prev() {
