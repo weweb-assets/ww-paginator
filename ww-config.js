@@ -19,15 +19,15 @@ export default {
         },
         paginatorText: {
             hidden: true,
-            defaultValue: wwLib.element('ww-text'),
+            defaultValue: {isWwObject: true, type: 'ww-text' },
         },
         paginatorPrev: {
             hidden: true,
-            defaultValue: wwLib.element({ type: 'ww-icon', content: { icon: 'fas fa-angle-left' } }),
+            defaultValue: {isWwObject: true, type:'ww-icon', content: { icon: 'fas fa-angle-left' }  },
         },
         paginatorNext: {
             hidden: true,
-            defaultValue: wwLib.element({ type: 'ww-icon', content: { icon: 'fas fa-angle-right' } }),
+            defaultValue:{isWwObject: true, type:'ww-icon', content: { icon: 'fas fa-angle-right' }  },
         },
     },
 };
