@@ -123,10 +123,12 @@ ul {
     justify-content: center;
     list-style: none;
     margin: 0;
+    padding: 0;
     li {
         padding: 0;
         user-select: none;
         cursor: pointer;
+        margin: 0;
     }
 }
 .hide-icon {
