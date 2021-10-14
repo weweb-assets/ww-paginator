@@ -27,12 +27,6 @@
 
 <script>
 export default {
-    wwDefaultContent: {
-        collectionId: null,
-        paginatorText: wwLib.element('ww-text'),
-        paginatorPrev: wwLib.element({ type: 'ww-icon', content: { icon: 'fas fa-angle-left' } }),
-        paginatorNext: wwLib.element({ type: 'ww-icon', content: { icon: 'fas fa-angle-right' } }),
-    },
     props: {
         content: { type: Object, required: true },
         /* wwEditor:start */
@@ -122,7 +116,7 @@ export default {
 };
 </script>
 
- <style lang="scss" scoped>
+<style lang="scss" scoped>
 ul {
     display: flex;
     align-items: center;
@@ -135,6 +129,7 @@ ul {
         padding: 0;
         user-select: none;
         cursor: pointer;
+        margin: 0;
     }
 }
 .hide-icon {
