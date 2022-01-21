@@ -73,7 +73,7 @@ export default {
 
             // Current page
             if (this.currentPage !== 0 && this.currentPage !== lastPage) {
-                navigation.push({ label: `${this.currentPage + 1}`, index: this.currentPage });
+                navigation.push({ label: `${this.currentPage + 1}`, index: this.currentPage, states: ['active'] });
                 index = this.currentPage;
             }
 
