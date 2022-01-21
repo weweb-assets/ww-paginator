@@ -59,7 +59,7 @@ export default {
             const next = this.currentPage + 1;
             let index = 0;
             let navigation = [];
-            navigation.push({ label: '1', index: 0 });
+            navigation.push({ label: '1', index: 0, states: 0 === this.currentPage ? ['active'] : [] });
 
             // Prev page
             if (prev > index) {
@@ -89,7 +89,11 @@ export default {
 
             // Last page
             if (lastPage > index) {
-                navigation.push({ label: `${lastPage + 1}`, index: lastPage });
+                navigation.push({
+                    label: `${lastPage + 1}`,
+                    index: lastPage,
+                    states: lastPage === this.currentPage ? ['active'] : [],
+                });
             }
 
             return navigation;
@@ -112,7 +116,7 @@ export default {
                 this.goTo(this.currentPage + 1);
             }
         },
-    }
+    },
 };
 </script>
 

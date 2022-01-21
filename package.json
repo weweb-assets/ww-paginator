@@ -4,7 +4,7 @@
         "type": "git",
         "url": "https://github.com/weweb-assets/ww-paginator"
     },
-    "version": "3.1.1",
+    "version": "3.1.2",
     "license": "MIT",
     "scripts": {
         "build": "weweb build",
