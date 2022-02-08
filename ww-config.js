@@ -4,6 +4,7 @@ export default {
             en: 'Paginator',
             fr: 'Paginateur',
         },
+        icon: 'fontawesome/solid/ellipsis-h',
         bubble: {
             icon: 'fontawesome/solid/ellipsis-h',
         },
