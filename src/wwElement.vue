@@ -33,6 +33,7 @@ export default {
         wwEditorState: { type: Object, required: true },
         /* wwEditor:end */
     },
+    emits: ['trigger-event'],
     computed: {
         isEditing() {
             /* wwEditor:start */
@@ -42,6 +43,14 @@ export default {
             return false;
         },
         paginationOptions() {
+            if (this.content.useCustomPagination) {
+                return {
+                    limit: this.content.paginatorLimit,
+                    offset: this.content.paginatorOffset,
+                    total: this.content.paginatorTotal,
+                }
+            }
+
             if (!this.content.collectionId) return null;
             return wwLib.wwCollection.getPaginationOptions(this.content.collectionId);
         },
@@ -103,7 +112,14 @@ export default {
         goTo(index) {
             if (!this.paginationOptions) return;
             if (index !== -1 && index !== this.currentPage) {
-                wwLib.wwCollection.setOffset(this.content.collectionId, index * this.paginationOptions.limit);
+                if (!this.content.useCustomPagination) {
+                    wwLib.wwCollection.setOffset(this.content.collectionId, index * this.paginationOptions.limit);
+                }
+
+                this.$emit('trigger-event', {
+                    name: 'change',
+                    event: { context: { offset: index * this.paginationOptions.limit, page: index + 1 } },
+                });
             }
         },
         prev() {
