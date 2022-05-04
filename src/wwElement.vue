@@ -48,7 +48,7 @@ export default {
                     limit: this.content.paginatorLimit,
                     offset: this.content.paginatorOffset,
                     total: this.content.paginatorTotal,
-                }
+                };
             }
 
             if (!this.content.collectionId) return null;
@@ -56,7 +56,8 @@ export default {
         },
         nbPage() {
             if (!this.paginationOptions) return 10;
-            return Math.ceil(this.paginationOptions.total / this.paginationOptions.limit);
+            const nbPage = Math.ceil(this.paginationOptions.total / this.paginationOptions.limit);
+            return isNaN(nbPage) ? 1 : nbPage;
         },
         currentPage() {
             if (!this.paginationOptions) return 1;
