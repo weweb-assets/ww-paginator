@@ -61,7 +61,8 @@ export default {
         },
         currentPage() {
             if (!this.paginationOptions) return 1;
-            return Math.floor(this.paginationOptions.offset / this.paginationOptions.limit);
+            const currentPage = Math.floor(this.paginationOptions.offset / this.paginationOptions.limit)
+            return isNaN(currentPage) ? 0 : currentPage;
         },
         navigation() {
             const lastPage = this.nbPage - 1;
