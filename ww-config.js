@@ -52,7 +52,7 @@ export default {
             /* wwEditor:start */
             bindingValidation: {
                 type: 'number',
-                tooltip: 'A number that defines if the paginator total items: `10`',
+                tooltip: 'A number that defines the paginator total items: `10`',
             },
             /* wwEditor:end */
         },
@@ -65,7 +65,7 @@ export default {
             /* wwEditor:start */
             bindingValidation: {
                 type: 'number',
-                tooltip: 'A number that defines if the paginator items per page: `5`',
+                tooltip: 'A number that defines the paginator items per page: `5`',
             },
             /* wwEditor:end */
         },
@@ -78,7 +78,7 @@ export default {
             /* wwEditor:start */
             bindingValidation: {
                 type: 'number',
-                tooltip: 'A number that defines if the paginator offset: `0`',
+                tooltip: 'A number that defines the paginator offset: `0`',
             },
             /* wwEditor:end */
         },
