@@ -9,9 +9,7 @@ export default {
             icon: 'fontawesome/solid/ellipsis-h',
         },
     },
-    triggerEvents: [
-        { name: 'change', label: { en: 'On change' }, event: { context: {} } },
-    ],
+    triggerEvents: [{ name: 'change', label: { en: 'On change' }, event: { context: {} } }],
     properties: {
         useCustomPagination: {
             label: {
@@ -39,11 +37,11 @@ export default {
         },
         paginatorPrev: {
             hidden: true,
-            defaultValue: { isWwObject: true, type:'ww-icon', content: { icon: 'fas fa-angle-left' }  },
+            defaultValue: { isWwObject: true, type: 'ww-icon', content: { icon: 'fas fa-angle-left' } },
         },
         paginatorNext: {
             hidden: true,
-            defaultValue: { isWwObject: true, type:'ww-icon', content: { icon: 'fas fa-angle-right' }  },
+            defaultValue: { isWwObject: true, type: 'ww-icon', content: { icon: 'fas fa-angle-right' } },
         },
         paginatorTotal: {
             hidden: content => !content.useCustomPagination,
@@ -51,6 +49,12 @@ export default {
             type: 'Number',
             defaultValue: 10,
             bindable: true,
+            /* wwEditor:start */
+            bindingValidation: {
+                type: 'number',
+                tooltip: 'A number that defines the paginator total items: `10`',
+            },
+            /* wwEditor:end */
         },
         paginatorLimit: {
             hidden: content => !content.useCustomPagination,
@@ -58,6 +62,12 @@ export default {
             type: 'Number',
             defaultValue: 5,
             bindable: true,
+            /* wwEditor:start */
+            bindingValidation: {
+                type: 'number',
+                tooltip: 'A number that defines the paginator items per page: `5`',
+            },
+            /* wwEditor:end */
         },
         paginatorOffset: {
             hidden: content => !content.useCustomPagination,
@@ -65,6 +75,12 @@ export default {
             type: 'Number',
             defaultValue: 0,
             bindable: true,
-        }
+            /* wwEditor:start */
+            bindingValidation: {
+                type: 'number',
+                tooltip: 'A number that defines the paginator offset: `0`',
+            },
+            /* wwEditor:end */
+        },
     },
 };
