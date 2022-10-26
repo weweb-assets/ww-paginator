@@ -4,9 +4,9 @@ export default {
             en: 'Paginator',
             fr: 'Paginateur',
         },
-        icon: 'fontawesome/solid/ellipsis-h',
+        icon: 'dots-horizontal',
         bubble: {
-            icon: 'fontawesome/solid/ellipsis-h',
+            icon: 'dots-horizontal',
         },
     },
     triggerEvents: [{ name: 'change', label: { en: 'On change' }, event: { context: {} } }],
