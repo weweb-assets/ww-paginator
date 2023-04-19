@@ -11,11 +11,13 @@
                     :aria-current="nav.index === currentPage"
                     @click="goTo(nav.index)"
                 >
-                    <wwObject
-                        v-bind="content.paginatorText"
-                        :ww-props="{ text: nav.label }"
-                        :states="nav.states"
-                    ></wwObject>
+                    <wwLayoutItemContext is-repeat :index="index">
+                        <wwElement
+                            v-bind="content.paginatorText"
+                            :ww-props="{ text: nav.label }"
+                            :states="nav.states"
+                        ></wwElement>
+                    </wwLayoutItemContext>
                 </li>
             </template>
             <li :class="{ 'hide-icon': !isEditing && currentPage === nbPage - 1 }" @click="next">
@@ -61,7 +63,7 @@ export default {
         },
         currentPage() {
             if (!this.paginationOptions) return 1;
-            const currentPage = Math.floor(this.paginationOptions.offset / this.paginationOptions.limit)
+            const currentPage = Math.floor(this.paginationOptions.offset / this.paginationOptions.limit);
             return isNaN(currentPage) ? 0 : currentPage;
         },
         navigation() {
