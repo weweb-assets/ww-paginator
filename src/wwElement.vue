@@ -40,26 +40,6 @@ export default {
     },
     emits: ['trigger-event'],
     setup(props) {
-
-        const paginationOptions = computed(() => {
-            if (props.content.useCustomPagination) {
-                return {
-                    limit: props.content.paginatorLimit,
-                    offset: props.content.paginatorOffset,
-                    total: props.content.paginatorTotal,
-                };
-            }
-
-            if (!props.content.collectionId) return null;
-            return wwLib.wwCollection.getPaginationOptions(props.content.collectionId);
-        })
-
-        const nbPage = computed( () => {
-            if (!paginationOptions.value) return 10;
-            const nbPage = Math.ceil(paginationOptions.value.total / paginationOptions.value.limit);
-            return isNaN(nbPage) ? 1 : nbPage;
-        })
-
         const { value: currentPage, setValue: setCurrentPage } = wwLib.wwVariable.useComponentVariable({
             uid: props.uid,
             name: 'page',
@@ -92,7 +72,7 @@ export default {
             defaultValue: 0,
         });
 
-        return { paginationOptions, nbPage, currentPage, setCurrentPage, setInternalOffset, setInternalLimit, setInternalTotal };
+        return { currentPage, setCurrentPage, setInternalOffset, setInternalLimit, setInternalTotal };
     },
     watch: {
         'paginationOptions.limit'(newVal, oldVal){
@@ -115,6 +95,24 @@ export default {
             /* wwEditor:end */
             // eslint-disable-next-line no-unreachable
             return false;
+        },
+        paginationOptions() {
+            if (this.content.useCustomPagination) {
+                console.log(this.content.paginatorTotal)
+                return {
+                    limit: this.content.paginatorLimit,
+                    offset: this.content.paginatorOffset,
+                    total: this.content.paginatorTotal,
+                };
+            }
+
+            if (!this.content.collectionId) return null;
+            return wwLib.wwCollection.getPaginationOptions(this.content.collectionId);
+        },
+        nbPage() {
+            if (!this.paginationOptions) return 10;
+            const nbPage = Math.ceil(this.paginationOptions.total / this.paginationOptions.limit);
+            return isNaN(nbPage) ? 1 : nbPage;
         },
         updateInternalValues(){
             let currentPage;
