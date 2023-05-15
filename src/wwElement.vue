@@ -64,27 +64,31 @@ export default {
             uid: props.uid,
             name: 'page',
             type: 'number',
+            readonly: true,
             defaultValue: 0
         });
 
-        const { value: _internalOffset, setValue: setInternalOffset } = wwLib.wwVariable.useComponentVariable({
+        const { setValue: setInternalOffset } = wwLib.wwVariable.useComponentVariable({
             uid: props.uid,
             name: 'offset',
             type: 'number',
+            readonly: true,
             defaultValue: 0,
         });
 
-        const { value: _internalLimit, setValue: setInternalLimit } = wwLib.wwVariable.useComponentVariable({
+        const { setValue: setInternalLimit } = wwLib.wwVariable.useComponentVariable({
             uid: props.uid,
             name: 'limit',
             type: 'number',
+            readonly: true,
             defaultValue: 0,
         });
 
-        const { value: _internalTotal, setValue: setInternalTotal } = wwLib.wwVariable.useComponentVariable({
+        const { setValue: setInternalTotal } = wwLib.wwVariable.useComponentVariable({
             uid: props.uid,
             name: 'total',
             type: 'number',
+            readonly: true,
             defaultValue: 0,
         });
 
