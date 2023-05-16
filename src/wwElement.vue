@@ -76,15 +76,15 @@ export default {
     },
     watch: {
         'paginationOptions.limit'(newVal, oldVal){
-            if(newVal != oldVal && this.updateInternalValues)
+            if(newVal !== oldVal && this.updateInternalValues)
                 this.updateInternalValues();
         },
         'paginationOptions.total'(newVal, oldVal){
-            if(newVal != oldVal && this.updateInternalValues)
+            if(newVal !== oldVal && this.updateInternalValues)
                 this.updateInternalValues();
         },
         'paginationOptions.offset'(newVal, oldVal){
-            if(newVal != oldVal && this.updateInternalValues)
+            if(newVal !== oldVal && this.updateInternalValues)
                 this.updateInternalValues();
         },
     },
@@ -98,7 +98,6 @@ export default {
         },
         paginationOptions() {
             if (this.content.useCustomPagination) {
-                console.log(this.content.paginatorTotal)
                 return {
                     limit: this.content.paginatorLimit,
                     offset: this.content.paginatorOffset,
