@@ -9,7 +9,7 @@ export default {
             icon: 'dots-horizontal',
         },
     },
-    triggerEvents: [{ name: 'change', label: { en: 'On change' }, event: { context: {} } }],
+    triggerEvents: [{ name: 'change', label: { en: 'On change' }, event: { context: { page: 0, offset: 0, limit: 0, total: 0} } }],
     properties: {
         useCustomPagination: {
             label: {
