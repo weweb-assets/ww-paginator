@@ -17,7 +17,7 @@
                             :ww-props="{ text: nav.label }"
                             :states="nav.states"
                         ></wwElement>
-                    </wwLayoutItemContext> 
+                    </wwLayoutItemContext>
                 </li>
             </template>
             <li :class="{ 'hide-icon': !isEditing && currentPage === nbPage - 1 }" @click="next">
@@ -28,66 +28,14 @@
 </template>
 
 <script>
-import { computed } from 'vue';
-
 export default {
     props: {
         content: { type: Object, required: true },
-        uid: { type: String, required: true },
         /* wwEditor:start */
         wwEditorState: { type: Object, required: true },
         /* wwEditor:end */
     },
     emits: ['trigger-event'],
-    setup(props) {
-        const { value: currentPage, setValue: setCurrentPage } = wwLib.wwVariable.useComponentVariable({
-            uid: props.uid,
-            name: 'page',
-            type: 'number',
-            readonly: true,
-            defaultValue: 0
-        });
-
-        const { setValue: setInternalOffset } = wwLib.wwVariable.useComponentVariable({
-            uid: props.uid,
-            name: 'offset',
-            type: 'number',
-            readonly: true,
-            defaultValue: 0,
-        });
-
-        const { setValue: setInternalLimit } = wwLib.wwVariable.useComponentVariable({
-            uid: props.uid,
-            name: 'limit',
-            type: 'number',
-            readonly: true,
-            defaultValue: 0,
-        });
-
-        const { setValue: setInternalTotal } = wwLib.wwVariable.useComponentVariable({
-            uid: props.uid,
-            name: 'total',
-            type: 'number',
-            readonly: true,
-            defaultValue: 0,
-        });
-
-        return { currentPage, setCurrentPage, setInternalOffset, setInternalLimit, setInternalTotal };
-    },
-    watch: {
-        'paginationOptions.limit'(newVal, oldVal){
-            if(newVal !== oldVal && this.updateInternalValues)
-                this.updateInternalValues();
-        },
-        'paginationOptions.total'(newVal, oldVal){
-            if(newVal !== oldVal && this.updateInternalValues)
-                this.updateInternalValues();
-        },
-        'paginationOptions.offset'(newVal, oldVal){
-            if(newVal !== oldVal && this.updateInternalValues)
-                this.updateInternalValues();
-        },
-    },
     computed: {
         isEditing() {
             /* wwEditor:start */
@@ -113,18 +61,10 @@ export default {
             const nbPage = Math.ceil(this.paginationOptions.total / this.paginationOptions.limit);
             return isNaN(nbPage) ? 1 : nbPage;
         },
-        updateInternalValues(){
-            let currentPage;
-            if (!this.paginationOptions) currentPage = 1;
-            else {
-                const _currentPage = Math.floor(this.paginationOptions.offset / this.paginationOptions.limit);
-                currentPage = isNaN(_currentPage) ? 0 : _currentPage;
-            }
-
-            this.setCurrentPage(currentPage);
-            this.setInternalOffset(this.paginationOptions.offset);
-            this.setInternalLimit(this.paginationOptions.limit);
-            this.setInternalTotal(this.paginationOptions.total);
+        currentPage() {
+            if (!this.paginationOptions) return 1;
+            const currentPage = Math.floor(this.paginationOptions.offset / this.paginationOptions.limit);
+            return isNaN(currentPage) ? 0 : currentPage;
         },
         navigation() {
             const lastPage = this.nbPage - 1;
@@ -168,6 +108,7 @@ export default {
                     states: lastPage === this.currentPage ? ['active'] : [],
                 });
             }
+
             return navigation;
         },
     },
