@@ -122,7 +122,7 @@ export default {
 
                 this.$emit('trigger-event', {
                     name: 'change',
-                    event: { context: { offset: index * this.paginationOptions.limit, page: index + 1 } },
+                    event: { context: { offset: index * this.paginationOptions.limit, page: index + 1, total: this.paginationOptions.total, limit: this.paginationOptions.limit } },
                 });
             }
         },
