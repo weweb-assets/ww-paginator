@@ -35,7 +35,12 @@ export default {
         wwEditorState: { type: Object, required: true },
         /* wwEditor:end */
     },
-    emits: ['trigger-event'],
+    emits: ['trigger-event', 'update:content'],
+    watch: {
+        'content.useCustomPagination'(value) {
+            if (value) this.$emit('update:content', { collectionId: null });
+        },
+    },
     computed: {
         isEditing() {
             /* wwEditor:start */
@@ -122,7 +127,14 @@ export default {
 
                 this.$emit('trigger-event', {
                     name: 'change',
-                    event: { context: { offset: index * this.paginationOptions.limit, page: index + 1, total: this.paginationOptions.total, limit: this.paginationOptions.limit } },
+                    event: {
+                        context: {
+                            offset: index * this.paginationOptions.limit,
+                            page: index + 1,
+                            total: this.paginationOptions.total,
+                            limit: this.paginationOptions.limit,
+                        },
+                    },
                 });
             }
         },
