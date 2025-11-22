@@ -38,7 +38,8 @@ export default {
     emits: ['trigger-event', 'update:content'],
     watch: {
         'content.useCustomPagination'(value) {
-            if (value) this.$emit('update:content', { collectionId: null });
+            if (value)
+                this.$emit('update:content', { collectionId: null, tableViewId: null, paginationType: 'collection' });
         },
     },
     computed: {
@@ -58,8 +59,17 @@ export default {
                 };
             }
 
-            if (!this.content.collectionId) return null;
-            return wwLib.wwCollection.getPaginationOptions(this.content.collectionId);
+            const type = this.content.paginationType || 'collection';
+
+            if (type === 'tableView' && this.content.tableViewId) {
+                return wwLib.wwTableView.getPaginationOptions(this.content.tableViewId);
+            }
+
+            if (type === 'collection' && this.content.collectionId) {
+                return wwLib.wwCollection.getPaginationOptions(this.content.collectionId);
+            }
+
+            return null;
         },
         nbPage() {
             if (!this.paginationOptions) return 10;
@@ -122,7 +132,13 @@ export default {
             if (!this.paginationOptions) return;
             if (index !== -1 && index !== this.currentPage) {
                 if (!this.content.useCustomPagination) {
-                    wwLib.wwCollection.setOffset(this.content.collectionId, index * this.paginationOptions.limit);
+                    const type = this.content.paginationType || 'collection';
+
+                    if (type === 'tableView' && this.content.tableViewId) {
+                        wwLib.wwTableView.setOffset(this.content.tableViewId, index * this.paginationOptions.limit);
+                    } else if (type === 'collection' && this.content.collectionId) {
+                        wwLib.wwCollection.setOffset(this.content.collectionId, index * this.paginationOptions.limit);
+                    }
                 }
 
                 this.$emit('trigger-event', {
