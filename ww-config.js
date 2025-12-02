@@ -21,50 +21,13 @@ export default {
             type: 'OnOff',
             defaultValue: false,
         },
-        paginationType: {
-            label: {
-                en: 'Pagination type',
-                fr: 'Type de pagination',
-            },
-            placeholder: { en: 'Select a type', fr: 'Sélectionnez un type' },
-            type: 'TextSelect',
-            options: {
-                options: [
-                    { value: 'collection', label: 'Collection', icon: 'collection' },
-                    { value: 'tableView', label: 'Table View', default: true, icon: '16/table' },
-                ],
-            },
-            defaultValue: 'collection',
+        paginatedSourceId: {
             hidden: content => content.useCustomPagination,
-        },
-        collectionId: {
-            hidden: content => {
-                if (content.useCustomPagination) return true;
-                const type = content.paginationType || 'collection';
-                return type !== 'collection';
-            },
             label: {
-                en: 'Collection',
-                fr: 'Collection',
+                en: 'Source',
+                fr: 'Source',
             },
-            type: 'Collection',
-            options: {
-                paginated: true,
-            },
-            defaultValue: null,
-        },
-        tableViewId: {
-            hidden: content => {
-                if (content.useCustomPagination) return true;
-                const type = content.paginationType || 'collection';
-                return type !== 'tableView';
-            },
-            placeholder: { en: 'Select a table view', fr: 'Sélectionnez une vue de table' },
-            label: {
-                en: 'Table View',
-                fr: 'Vue de table',
-            },
-            type: 'TableView',
+            type: 'PaginatedSource',
             defaultValue: null,
         },
         paginatorText: {
