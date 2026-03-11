@@ -1,0 +1,108 @@
+{
+    "metadata": {
+        "name": "ww-paginator",
+        "description": "A pagination navigation component that displays page numbers with previous/next buttons. It can be linked to a paginated source (table view or collection) for automatic pagination, or used with custom pagination settings (total, limit, offset).",
+        "keywords": [
+            "paginator",
+            "pagination",
+            "paging",
+            "pages",
+            "navigation"
+        ],
+        "features": [
+            "Automatic pagination linked to a table view or collection source",
+            "Custom pagination mode with configurable total items, items per page, and offset",
+            "Page change events with context (page, offset, limit, total)",
+            "Customizable previous/next button icons and page number text elements",
+            "Smart navigation display with ellipsis separators for large page counts",
+            "Does not support infinite scroll or load-more patterns",
+            "Does not support page size selection (items per page is a fixed setting)"
+        ]
+    },
+    "properties": [
+        {
+            "name": "useCustomPagination",
+            "description": "Enable custom pagination mode instead of linking to a paginated source (table view or collection). When true, you must provide paginatorTotal, paginatorLimit, and paginatorOffset manually.",
+            "type": "boolean",
+            "defaultValue": false
+        },
+        {
+            "name": "paginatedSourceId",
+            "description": "The ID of the paginated source to link to. Format is 'tableView:{id}' or 'collection:{id}'. Only used when useCustomPagination is false.",
+            "type": "string",
+            "defaultValue": null
+        },
+        {
+            "name": "paginatorTotal",
+            "description": "Total number of items to paginate. Only used when useCustomPagination is true.",
+            "type": "number",
+            "defaultValue": 10
+        },
+        {
+            "name": "paginatorLimit",
+            "description": "Number of items per page. Only used when useCustomPagination is true.",
+            "type": "number",
+            "defaultValue": 5
+        },
+        {
+            "name": "paginatorOffset",
+            "description": "Current offset (number of items to skip from the beginning). Only used when useCustomPagination is true.",
+            "type": "number",
+            "defaultValue": 0
+        }
+    ],
+    "states": [],
+    "events": [
+        {
+            "name": "change",
+            "description": "Triggered when the user navigates to a different page (via previous, next, or direct page click).",
+            "payload": {
+                "page": "number (1-based page number)",
+                "offset": "number (0-based offset)",
+                "limit": "number (items per page)",
+                "total": "number (total items)"
+            }
+        }
+    ],
+    "localContext": [],
+    "actions": [],
+    "slots": [
+        {
+            "name": "paginatorText",
+            "description": "Use a ww-text directly, il will be automatically repeated for each visible page link in the navigation. DO NOT EDIT THE TEXT OF THE ELEMENT, IT'S AUTOMATICALLY GENERATED. But you can custom the styles as needed. The state named 'active' has to be set in states config and used in the styles to set the active page number style.",
+            "type": "object"
+        },
+        {
+            "name": "paginatorPrev",
+            "description": "Use a ww-icon directly, it will be automatically hidden when the user is on the first page.",
+            "type": "object"
+        },
+        {
+            "name": "paginatorNext",
+            "description": "Use a ww-icon directly, it will be automatically hidden when the user is on the last page.",
+            "type": "object"
+        }
+    ],
+    "variables": [],
+    "specifications": [
+        "Link to a table view or collection via paginatedSourceId for automatic pagination management",
+        "Use custom pagination mode (useCustomPagination: true) for manual control with total, limit, and offset",
+        "The change event provides a 1-based page number and 0-based offset",
+        "Previous/next buttons are automatically hidden when at the first/last page"
+    ],
+    "examples": [
+        {
+            "description": "Paginator linked to a collection source",
+            "example": "{ \"useCustomPagination\": false, \"paginatedSourceId\": \"collection:my-collection-id\" }"
+        },
+        {
+            "description": "Paginator linked to a table view source",
+            "example": "{ \"useCustomPagination\": false, \"paginatedSourceId\": \"tableView:my-table-view-id\" }"
+        },
+        {
+            "description": "Custom pagination with 100 items, 10 per page, starting at the beginning",
+            "example": "{ \"useCustomPagination\": true, \"paginatorTotal\": 100, \"paginatorLimit\": 10, \"paginatorOffset\": 0 }"
+        }
+    ],
+    "dependencies": []
+}
