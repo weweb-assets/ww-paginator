@@ -35,10 +35,20 @@ export default {
         wwEditorState: { type: Object, required: true },
         /* wwEditor:end */
     },
-    emits: ['trigger-event', 'update:content'],
+    emits: ['trigger-event', 'update:content', 'update:content:effect'],
+    mounted() {
+        /* wwEditor:start */
+        if (this.content.collectionId && !this.content.paginatedSourceId) {
+            this.$emit('update:content:effect', {
+                paginatedSourceId: `collection:${this.content.collectionId}`,
+                collectionId: null,
+            });
+        }
+        /* wwEditor:end */
+    },
     watch: {
         'content.useCustomPagination'(value) {
-            if (value) this.$emit('update:content', { collectionId: null });
+            if (value) this.$emit('update:content', { paginatedSourceId: null });
         },
     },
     computed: {
@@ -49,6 +59,16 @@ export default {
             // eslint-disable-next-line no-unreachable
             return false;
         },
+        sourceType() {
+            if (!this.content.paginatedSourceId) return null;
+            const [type] = this.content.paginatedSourceId.split(':');
+            return type;
+        },
+        sourceId() {
+            if (!this.content.paginatedSourceId) return null;
+            const [, id] = this.content.paginatedSourceId.split(':');
+            return id;
+        },
         paginationOptions() {
             if (this.content.useCustomPagination) {
                 return {
@@ -58,8 +78,15 @@ export default {
                 };
             }
 
-            if (!this.content.collectionId) return null;
-            return wwLib.wwCollection.getPaginationOptions(this.content.collectionId);
+            if (this.sourceType === 'tableView' && this.sourceId) {
+                return wwLib.wwTableView.getPaginationOptions(this.sourceId);
+            }
+
+            if (this.sourceType === 'collection' && this.sourceId) {
+                return wwLib.wwCollection.getPaginationOptions(this.sourceId);
+            }
+
+            return null;
         },
         nbPage() {
             if (!this.paginationOptions) return 10;
@@ -122,7 +149,11 @@ export default {
             if (!this.paginationOptions) return;
             if (index !== -1 && index !== this.currentPage) {
                 if (!this.content.useCustomPagination) {
-                    wwLib.wwCollection.setOffset(this.content.collectionId, index * this.paginationOptions.limit);
+                    if (this.sourceType === 'tableView' && this.sourceId) {
+                        wwLib.wwTableView.setOffset(this.sourceId, index * this.paginationOptions.limit);
+                    } else if (this.sourceType === 'collection' && this.sourceId) {
+                        wwLib.wwCollection.setOffset(this.sourceId, index * this.paginationOptions.limit);
+                    }
                 }
 
                 this.$emit('trigger-event', {

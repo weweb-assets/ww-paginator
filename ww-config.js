@@ -9,7 +9,9 @@ export default {
             icon: 'dots-horizontal',
         },
     },
-    triggerEvents: [{ name: 'change', label: { en: 'On change' }, event: { context: { page: 0, offset: 0, limit: 0, total: 0} } }],
+    triggerEvents: [
+        { name: 'change', label: { en: 'On change' }, event: { context: { page: 0, offset: 0, limit: 0, total: 0 } } },
+    ],
     properties: {
         useCustomPagination: {
             label: {
@@ -19,16 +21,13 @@ export default {
             type: 'OnOff',
             defaultValue: false,
         },
-        collectionId: {
+        paginatedSourceId: {
             hidden: content => content.useCustomPagination,
             label: {
-                en: 'Collection',
-                fr: 'Collection',
+                en: 'Source',
+                fr: 'Source',
             },
-            type: 'Collection',
-            options: {
-                paginated: true,
-            },
+            type: 'PaginatedSource',
             defaultValue: null,
         },
         paginatorText: {
