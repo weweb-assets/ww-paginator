@@ -50,6 +50,13 @@ export default {
         'content.useCustomPagination'(value) {
             if (value) this.$emit('update:content', { paginatedSourceId: null });
         },
+        /* wwEditor:start */
+        'content.paginatedSourceId'() {
+            if (this.content.paginationScope === 'group') {
+                this.$emit('update:content', { paginationScope: 'view', paginatedGroup: null });
+            }
+        },
+        /* wwEditor:end */
     },
     computed: {
         isEditing() {
@@ -69,6 +76,10 @@ export default {
             const [, id] = this.content.paginatedSourceId.split(':');
             return id;
         },
+        tableViewPaginationOptions() {
+            if (this.content.paginationScope !== 'group') return undefined;
+            return { group: this.content.paginatedGroup };
+        },
         paginationOptions() {
             if (this.content.useCustomPagination) {
                 return {
@@ -79,7 +90,7 @@ export default {
             }
 
             if (this.sourceType === 'tableView' && this.sourceId) {
-                return wwLib.wwTableView.getPaginationOptions(this.sourceId);
+                return wwLib.wwTableView.getPaginationOptions(this.sourceId, this.tableViewPaginationOptions);
             }
 
             if (this.sourceType === 'collection' && this.sourceId) {
@@ -89,12 +100,12 @@ export default {
             return null;
         },
         nbPage() {
-            if (!this.paginationOptions) return 10;
+            if (!this.paginationOptions) return 1;
             const nbPage = Math.ceil(this.paginationOptions.total / this.paginationOptions.limit);
             return isNaN(nbPage) ? 1 : nbPage;
         },
         currentPage() {
-            if (!this.paginationOptions) return 1;
+            if (!this.paginationOptions) return 0;
             const currentPage = Math.floor(this.paginationOptions.offset / this.paginationOptions.limit);
             return isNaN(currentPage) ? 0 : currentPage;
         },
@@ -150,7 +161,11 @@ export default {
             if (index !== -1 && index !== this.currentPage) {
                 if (!this.content.useCustomPagination) {
                     if (this.sourceType === 'tableView' && this.sourceId) {
-                        wwLib.wwTableView.setOffset(this.sourceId, index * this.paginationOptions.limit);
+                        wwLib.wwTableView.setOffset(
+                            this.sourceId,
+                            index * this.paginationOptions.limit,
+                            this.tableViewPaginationOptions
+                        );
                     } else if (this.sourceType === 'collection' && this.sourceId) {
                         wwLib.wwCollection.setOffset(this.sourceId, index * this.paginationOptions.limit);
                     }

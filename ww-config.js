@@ -30,6 +30,37 @@ export default {
             type: 'PaginatedSource',
             defaultValue: null,
         },
+        paginationScope: {
+            hidden: content => content.useCustomPagination || !content.paginatedSourceId?.startsWith('tableView:'),
+            label: { en: 'Paginate', fr: 'Paginer' },
+            type: 'TextRadioGroup',
+            defaultValue: 'view',
+            options: {
+                choices: [
+                    { value: 'view', title: 'View' },
+                    { value: 'group', title: 'Group rows' },
+                ],
+            },
+        },
+        paginatedGroup: {
+            hidden: content =>
+                content.useCustomPagination ||
+                !content.paginatedSourceId?.startsWith('tableView:') ||
+                content.paginationScope !== 'group',
+            label: { en: 'Group', fr: 'Groupe' },
+            type: 'Formula',
+            defaultValue: null,
+            /* wwEditor:start */
+            bindingValidation: {
+                type: 'object',
+                tooltip: 'A leaf group object from the selected grouped Table View.',
+            },
+            propertyHelp: {
+                tooltip:
+                    'Bind a leaf group from the selected Table View. The paginator will replace that group’s rows when the page changes.',
+            },
+            /* wwEditor:end */
+        },
         paginatorText: {
             hidden: true,
             defaultValue: { isWwObject: true, type: 'ww-text' },
