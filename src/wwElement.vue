@@ -1,8 +1,30 @@
 <template>
     <nav role="navigation">
         <ul>
-            <li :class="{ 'hide-icon': !isEditing && currentPage === 0 }" @click="prev">
-                <wwObject v-if="content.paginatorPrev" v-bind="content.paginatorPrev"></wwObject>
+            <li
+                class="paginator-arrow"
+                :class="{ 'hide-icon': !isEditing && currentPage === 0 }"
+                aria-label="Previous page"
+                @click="prev"
+            >
+                <span :class="{ 'paginator-arrow-placeholder': previousArrowFallback }">
+                    <wwObject v-if="content.paginatorPrev" v-bind="content.paginatorPrev"></wwObject>
+                </span>
+                <svg
+                    v-if="previousArrowFallback"
+                    class="paginator-arrow-fallback"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                >
+                    <path
+                        d="m15 18-6-6 6-6"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    />
+                </svg>
             </li>
             <template v-if="content.paginatorText">
                 <li
@@ -20,8 +42,25 @@
                     </wwLayoutItemContext>
                 </li>
             </template>
-            <li :class="{ 'hide-icon': !isEditing && currentPage === nbPage - 1 }" @click="next">
-                <wwObject v-if="content.paginatorNext" v-bind="content.paginatorNext"></wwObject>
+            <li
+                class="paginator-arrow"
+                :class="{ 'hide-icon': !isEditing && currentPage === nbPage - 1 }"
+                aria-label="Next page"
+                @click="next"
+            >
+                <span :class="{ 'paginator-arrow-placeholder': nextArrowFallback }">
+                    <wwObject v-if="content.paginatorNext" v-bind="content.paginatorNext"></wwObject>
+                </span>
+                <svg v-if="nextArrowFallback" class="paginator-arrow-fallback" viewBox="0 0 24 24" aria-hidden="true">
+                    <path
+                        d="m9 18 6-6-6-6"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    />
+                </svg>
             </li>
         </ul>
     </nav>
@@ -36,6 +75,10 @@ export default {
         /* wwEditor:end */
     },
     emits: ['trigger-event', 'update:content', 'update:content:effect'],
+    setup() {
+        const { resolveMappingFormula } = wwLib.wwFormula.useFormula();
+        return { resolveMappingFormula };
+    },
     mounted() {
         /* wwEditor:start */
         if (this.content.collectionId && !this.content.paginatedSourceId) {
@@ -59,6 +102,12 @@ export default {
         /* wwEditor:end */
     },
     computed: {
+        previousArrowFallback() {
+            return this.usesDefaultArrow(this.content.paginatorPrev, ['fas fa-angle-left', 'lucide/chevron-left']);
+        },
+        nextArrowFallback() {
+            return this.usesDefaultArrow(this.content.paginatorNext, ['fas fa-angle-right', 'lucide/chevron-right']);
+        },
         isEditing() {
             /* wwEditor:start */
             return this.wwEditorState.editMode === wwLib.wwEditorHelper.EDIT_MODES.EDITION;
@@ -78,7 +127,9 @@ export default {
         },
         tableViewPaginationOptions() {
             if (this.content.paginationScope !== 'group') return undefined;
-            return { group: this.content.paginatedGroup };
+            const configured = this.content.paginatedGroup;
+            const group = configured?.code && configured?.type ? this.resolveMappingFormula(configured) : configured;
+            return { group };
         },
         paginationOptions() {
             if (this.content.useCustomPagination) {
@@ -90,6 +141,7 @@ export default {
             }
 
             if (this.sourceType === 'tableView' && this.sourceId) {
+                if (this.content.paginationScope === 'group' && !this.tableViewPaginationOptions?.group) return null;
                 return wwLib.wwTableView.getPaginationOptions(this.sourceId, this.tableViewPaginationOptions);
             }
 
@@ -156,6 +208,22 @@ export default {
         },
     },
     methods: {
+        usesDefaultArrow(reference, defaults) {
+            if (!reference) return false;
+            const element = reference.uid
+                ? wwLib.$store?.getters['websiteData/getWwObjects']?.[reference.uid]
+                : reference;
+            const content = element?.content;
+            if (!content) return false;
+            // Responsive and state-specific custom icons continue to use the nested Icon element.
+            if (
+                Object.entries(content).some(
+                    ([key, value]) => key !== 'default' && value && Object.hasOwn(value, 'icon')
+                )
+            )
+                return false;
+            return defaults.includes(content.default?.icon ?? content.icon);
+        },
         goTo(index) {
             if (!this.paginationOptions) return;
             if (index !== -1 && index !== this.currentPage) {
@@ -216,6 +284,21 @@ ul {
 }
 .hide-icon {
     opacity: 0;
+    pointer-events: none;
+}
+.paginator-arrow {
+    position: relative;
+}
+.paginator-arrow-placeholder {
+    visibility: hidden;
+}
+.paginator-arrow-fallback {
+    position: absolute;
+    width: 1em;
+    height: 1em;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     pointer-events: none;
 }
 </style>

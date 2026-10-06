@@ -38,7 +38,7 @@ export default {
             options: {
                 choices: [
                     { value: 'view', title: 'View' },
-                    { value: 'group', title: 'Group rows' },
+                    { value: 'group', title: 'Group contents' },
                 ],
             },
         },
@@ -53,11 +53,11 @@ export default {
             /* wwEditor:start */
             bindingValidation: {
                 type: 'object',
-                tooltip: 'A leaf group object from the selected grouped Table View.',
+                tooltip: 'A group object from the selected grouped Table View.',
             },
             propertyHelp: {
                 tooltip:
-                    'Bind a leaf group from the selected Table View. The paginator will replace that group’s rows when the page changes.',
+                    'Bind a group from the selected Table View. Page changes replace its child groups or, for a leaf group, its rows.',
             },
             /* wwEditor:end */
         },
@@ -67,11 +67,11 @@ export default {
         },
         paginatorPrev: {
             hidden: true,
-            defaultValue: { isWwObject: true, type: 'ww-icon', content: { icon: 'fas fa-angle-left' } },
+            defaultValue: { isWwObject: true, type: 'ww-icon', content: { icon: 'lucide/chevron-left' } },
         },
         paginatorNext: {
             hidden: true,
-            defaultValue: { isWwObject: true, type: 'ww-icon', content: { icon: 'fas fa-angle-right' } },
+            defaultValue: { isWwObject: true, type: 'ww-icon', content: { icon: 'lucide/chevron-right' } },
         },
         paginatorTotal: {
             hidden: content => !content.useCustomPagination,
