@@ -37,8 +37,13 @@ export default {
             defaultValue: 'view',
             options: {
                 choices: [
-                    { value: 'view', title: 'View' },
-                    { value: 'group', title: 'Group contents' },
+                    { value: 'view', title: 'View', label: { en: 'View', fr: 'Vue' }, icon: '16/table' },
+                    {
+                        value: 'group',
+                        title: 'Group contents',
+                        label: { en: 'Group contents', fr: 'Contenu du groupe' },
+                        icon: '16/group',
+                    },
                 ],
             },
         },
