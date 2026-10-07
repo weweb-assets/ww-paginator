@@ -226,7 +226,14 @@ export default {
         },
         goTo(index) {
             if (!this.paginationOptions) return;
-            if (index !== -1 && index !== this.currentPage) {
+            const group = this.tableViewPaginationOptions?.group;
+            const groupPageUnloaded =
+                !this.content.useCustomPagination &&
+                this.content.paginationScope === 'group' &&
+                this.paginationOptions.total > 0 &&
+                group &&
+                !(group.rows || group.children || []).length;
+            if (index !== -1 && (index !== this.currentPage || groupPageUnloaded)) {
                 if (!this.content.useCustomPagination) {
                     if (this.sourceType === 'tableView' && this.sourceId) {
                         wwLib.wwTableView.setOffset(

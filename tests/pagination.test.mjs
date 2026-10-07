@@ -54,6 +54,26 @@ test('does not paginate the root when the group formula is empty or invalid', ()
     }
 });
 
+test('loads page one when a selected group has no loaded rows', () => {
+    const { instance, group, calls } = paginator({ paginatedGroup: { code: 'context.item.data', type: 'f' } });
+    group.rows = [];
+    instance.goTo(0);
+    const changed = calls.find(([kind]) => kind === 'offset');
+    assert.ok(changed, 'clicking page one must request its unloaded rows');
+    assert.equal(changed[1], 0);
+    assert.equal(changed[2].group, group);
+});
+
+test('keeps clicking the current loaded page or an empty group a no-op', () => {
+    const { instance, group, calls } = paginator({ paginatedGroup: { code: 'context.item.data', type: 'f' } });
+    group.rows = [{ id: 'loaded' }];
+    instance.goTo(0);
+    group.rows = [];
+    group.childrenPageInfo.total = 0;
+    instance.goTo(0);
+    assert.equal(calls.filter(([kind]) => kind === 'offset').length, 0);
+});
+
 test('renders default arrows without an icon pack and preserves custom icons', () => {
     const { instance } = paginator({
         paginatorPrev: { content: { default: { icon: 'fas fa-angle-left' } } },
