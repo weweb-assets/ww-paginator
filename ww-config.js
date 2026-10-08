@@ -30,17 +30,53 @@ export default {
             type: 'PaginatedSource',
             defaultValue: null,
         },
+        paginationScope: {
+            hidden: content => content.useCustomPagination || !content.paginatedSourceId?.startsWith('tableView:'),
+            label: { en: 'Paginate', fr: 'Paginer' },
+            type: 'TextRadioGroup',
+            defaultValue: 'view',
+            options: {
+                choices: [
+                    { value: 'view', title: 'View', label: { en: 'View', fr: 'Vue' }, icon: '16/table' },
+                    {
+                        value: 'group',
+                        title: 'Group contents',
+                        label: { en: 'Group contents', fr: 'Contenu du groupe' },
+                        icon: '16/group',
+                    },
+                ],
+            },
+        },
+        paginatedGroup: {
+            hidden: content =>
+                content.useCustomPagination ||
+                !content.paginatedSourceId?.startsWith('tableView:') ||
+                content.paginationScope !== 'group',
+            label: { en: 'Group', fr: 'Groupe' },
+            type: 'Formula',
+            defaultValue: null,
+            /* wwEditor:start */
+            bindingValidation: {
+                type: 'object',
+                tooltip: 'A group object from the selected grouped Table View.',
+            },
+            propertyHelp: {
+                tooltip:
+                    'Bind a group from the selected Table View. Page changes replace its child groups or, for a leaf group, its rows.',
+            },
+            /* wwEditor:end */
+        },
         paginatorText: {
             hidden: true,
             defaultValue: { isWwObject: true, type: 'ww-text' },
         },
         paginatorPrev: {
             hidden: true,
-            defaultValue: { isWwObject: true, type: 'ww-icon', content: { icon: 'fas fa-angle-left' } },
+            defaultValue: { isWwObject: true, type: 'ww-icon', content: { icon: 'lucide/chevron-left' } },
         },
         paginatorNext: {
             hidden: true,
-            defaultValue: { isWwObject: true, type: 'ww-icon', content: { icon: 'fas fa-angle-right' } },
+            defaultValue: { isWwObject: true, type: 'ww-icon', content: { icon: 'lucide/chevron-right' } },
         },
         paginatorTotal: {
             hidden: content => !content.useCustomPagination,
