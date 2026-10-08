@@ -225,6 +225,7 @@ export default {
             return defaults.includes(content.default?.icon ?? content.icon);
         },
         goTo(index) {
+            console.log('goTo', this.paginationOptions, index, this.currentPage);
             if (!this.paginationOptions) return;
             const group = this.tableViewPaginationOptions?.group;
             const groupPageUnloaded =
